@@ -38,12 +38,12 @@ const editedMessage = async (oldMessage, newMessage) => {
     allowedMentions: { parse: [] }
   };
   if (oldMessage.pinned !== newMessage.pinned) {
-    log.content = `📌 [Message](${newMessage.url}) by <@${newMessage.author.id}> was ${newMessage.pinned ? '' : 'un'}pinned in ${newMessage.channel.url} (\`${message.id}\`)`;
+    log.content = `📌 [Message](${newMessage.url}) by <@${newMessage.author.id}> was ${newMessage.pinned ? '' : 'un'}pinned in ${newMessage.channel.url} (\`${newMessage.id}\`)`;
   } else if (oldMessage.flags.has('SuppressEmbeds') !== newMessage.flags.has('SuppressEmbeds')) {
-    log.content = `📝 Embeds ${newMessage.flags.has('SuppressEmbeds') ? 'removed from' : 'shown on'} [message](${newMessage.url}) by <@${newMessage.author.id}> in ${newMessage.channel.url} (\`${message.id}\`)`;
+    log.content = `📝 Embeds ${newMessage.flags.has('SuppressEmbeds') ? 'removed from' : 'shown on'} [message](${newMessage.url}) by <@${newMessage.author.id}> in ${newMessage.channel.url} (\`${newMessage.id}\`)`;
     log.embeds = oldMessage.embeds;
   } else {
-    log.content = `📝 [Message](${newMessage.url}) by <@${newMessage.author.id}> was edited in ${newMessage.channel.url} (\`${message.id}\`)`;
+    log.content = `📝 [Message](${newMessage.url}) by <@${newMessage.author.id}> was edited in ${newMessage.channel.url} (\`${newMessage.id}\`)`;
     if (oldMessage.attachments !== newMessage.attachments) {
       log.files = oldMessage.attachments.map(attachment => ({
         name: attachment.name,
@@ -53,7 +53,6 @@ const editedMessage = async (oldMessage, newMessage) => {
     if (newMessage.reference) {
       log.content += `\n💬 Replying to https://discord.com/channels/${newMessage.guildId}/${newMessage.reference.channelId}/${newMessage.reference.messageId} (\`${newMessage.reference.messageId}\`)`;
     };
-    console.log(newMessage);
     if (diff.length <= 250) {
       if (diff) {
         log.content += `\n\`\`\`diff\n${diff}\n\`\`\``;
