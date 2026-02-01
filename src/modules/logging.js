@@ -38,18 +38,22 @@ const editedMessage = async (oldMessage, newMessage) => {
     allowedMentions: { parse: [] }
   };
   if (oldMessage.pinned !== newMessage.pinned) {
-    log.content = `📌 [Message](${newMessage.url}) by <@${newMessage.author.id}> was ${newMessage.pinned ? '' : 'un'}pinned in ${newMessage.channel.url}`;
+    log.content = `📌 [Message](${newMessage.url}) by <@${newMessage.author.id}> was ${newMessage.pinned ? '' : 'un'}pinned in ${newMessage.channel.url} (\`${message.id}\`)`;
   } else if (oldMessage.flags.has('SuppressEmbeds') !== newMessage.flags.has('SuppressEmbeds')) {
-    log.content = `📝 Embeds ${newMessage.flags.has('SuppressEmbeds') ? 'removed from' : 'shown on'} [message](${newMessage.url}) by <@${newMessage.author.id}> in ${newMessage.channel.url}`;
+    log.content = `📝 Embeds ${newMessage.flags.has('SuppressEmbeds') ? 'removed from' : 'shown on'} [message](${newMessage.url}) by <@${newMessage.author.id}> in ${newMessage.channel.url} (\`${message.id}\`)`;
     log.embeds = oldMessage.embeds;
   } else {
-    log.content = `📝 [Message](${newMessage.url}) by <@${newMessage.author.id}> was edited in ${newMessage.channel.url}`;
+    log.content = `📝 [Message](${newMessage.url}) by <@${newMessage.author.id}> was edited in ${newMessage.channel.url} (\`${message.id}\`)`;
     if (oldMessage.attachments !== newMessage.attachments) {
       log.files = oldMessage.attachments.map(attachment => ({
         name: attachment.name,
         attachment: attachment.url
       }));
     }
+    if (newMessage.reference) {
+      log.content += `\n💬 Replying to https://discord.com/channels/${newMessage.guildId}/${newMessage.reference.channelId}/${newMessage.reference.messageId} (\`${newMessage.reference.messageId}\`)`;
+    };
+    console.log(newMessage);
     if (diff.length <= 250) {
       if (diff) {
         log.content += `\n\`\`\`diff\n${diff}\n\`\`\``;
@@ -82,7 +86,7 @@ const deletedMessage = async (message) => {
   }
 
   let log = {
-    content: `🗑 [${message.messageSnapshots.first() ? 'Forwarded ' : ''}Message](${message.url}) by ${message.partial ? 'an unknown user' : `<@${message.author.id}>`} was deleted in ${message.channel.url}`,
+    content: `🗑 [${message.messageSnapshots.first() ? 'Forwarded ' : ''}Message](${message.url}) by ${message.partial ? 'an unknown user' : `<@${message.author.id}>`} was deleted in ${message.channel.url} (\`${message.id}\`)`,
     allowedMentions: { parse: [] }
   };
   const attachments = message.messageSnapshots.first() ? message.messageSnapshots.first().attachments : message.attachments;
@@ -139,7 +143,11 @@ const deletedMessage = async (message) => {
       }
     } else if (message.system) {
       content = "[" + stringifyMessageContent(message) + "]";
-    }
+    } else {
+      if (message.reference) {
+        log.content += `\n💬 Replying to https://discord.com/channels/${message.guildId}/${message.reference.channelId}/${message.reference.messageId} (\`${message.reference.messageId}\`)`;
+      };
+    };
 
     if (content.length <= 250) {
       log.content += `\n\`\`\`\n${content}\n\`\`\``;
