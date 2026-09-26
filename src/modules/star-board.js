@@ -113,12 +113,6 @@ class Board {
         this.setCount = db.prepare(`UPDATE ${this.table} SET count = ? WHERE original_message_id = ?;`);
     }
 
-    isOnOtherBoard(messageId) {
-        if (!this.otherBoard) return false;
-        const row = this.otherBoard.get.get(messageId);
-        return row && BigInt(row.starboard_message_id) > 0;
-    }
-
     async getReactionCount(reaction) {
         await reaction.users.fetch();
         return reaction.users.cache.filter((user) => !user.bot).size;
@@ -177,8 +171,6 @@ class Board {
 
         const message = reaction.message;
 
-        if (this.isOnOtherBoard(message.id)) return;
-
         const reactionCount = await this.getReactionCount(reaction);
         const existing = this.get.get(message.id);
 
@@ -235,8 +227,6 @@ const starboard = new Board({
     channelId: config.starboardChannelId
 });
 
-starboard.otherBoard = evilboard;
-
 async function autoReact(message) {
     if (message.author.bot) return;
     if (!message.channel) return;
@@ -264,14 +254,11 @@ module.exports = {
     autoReact,
     onReaction: async (reaction, user) => {
         await starboard.onReaction(reaction, user);
-        await evilboard.onReaction(reaction, user);
     },
     onDeleteMessage: async (message) => {
         await starboard.onDeleteMessage(message);
-        await evilboard.onDeleteMessage(message);
     },
     onEditMessage: async (message) => {
         await starboard.onEditMessage(message);
-        await evilboard.onEditMessage(message);
     }
 };
