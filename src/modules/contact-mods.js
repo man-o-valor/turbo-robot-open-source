@@ -57,7 +57,7 @@ const contactMods = async (interaction) => {
       content: `<@&${modRole.id}>`,
       embeds: [
         new EmbedBuilder()
-          .setColor(0xFF4C4C)
+          .setColor(0x657392)
           .setAuthor({
             name: `${username}`,
             iconURL: interaction.user.displayAvatarURL()
@@ -84,7 +84,7 @@ const contactMods = async (interaction) => {
     await thread.send({
       embeds: [
         new EmbedBuilder()
-          .setColor(0xFF4C4C)
+          .setColor(0x657392)
           .setAuthor({
             name: `${username}`,
             iconURL: interaction.user.displayAvatarURL()
@@ -126,7 +126,7 @@ const reportMessage = async (interaction) => {
       content: `<@&${modRole.id}>`,
       embeds: [
         new EmbedBuilder()
-          .setColor(0xFF4C4C)
+          .setColor(0x657392)
           .setAuthor({
             name: `${username}`,
             iconURL: interaction.user.displayAvatarURL()
@@ -149,7 +149,7 @@ const reportMessage = async (interaction) => {
     await thread.send({
       embeds: [
         new EmbedBuilder()
-          .setColor(0xFF4C4C)
+          .setColor(0x657392)
           .setAuthor({
             name: `${username}`,
             iconURL: interaction.user.displayAvatarURL()
@@ -187,7 +187,7 @@ const reportUser = async (interaction) => {
       content: `<@&${modRole.id}>`,
       embeds: [
         new EmbedBuilder()
-          .setColor(0xFF4C4C)
+          .setColor(0x657392)
           .setAuthor({
             name: `${username}`,
             iconURL: interaction.user.displayAvatarURL()
@@ -210,7 +210,7 @@ const reportUser = async (interaction) => {
     await thread.send({
       embeds: [
         new EmbedBuilder()
-          .setColor(0xFF4C4C)
+          .setColor(0x657392)
           .setAuthor({
             name: `${username}`,
             iconURL: interaction.user.displayAvatarURL()

@@ -8,16 +8,13 @@ const isPublicChannel = (channel) => {
 
     const DISABLED_CHANNELS = [
         config.starboardChannelId,
-        '1100160429382193193', // #updates
-        '901247658096754709', // #readme
-        '1046570476417323049', // #secreter-zone
-        '1150269777370165310', // #secretest-zone
-        '1394080368457682995', // #secret-zone
-        '1385119001964974120', // #wayback-machine
-        '1391383839359762533', // #mod-applications
-
-        '1349407494501568603', // ?? Deleted channels, most likely old wayback machines
-        '1349407854108479528',
+        '1553295265660797039',
+        '1553295265660797042',
+        '1553297069295272006',
+        '1553297589430915174',
+        '1553297630790950953',
+        '1553299617737744515',
+        '1553301467140718592'
     ];
     if (DISABLED_CHANNELS.includes(channel.id)) return false;
 
@@ -232,23 +229,13 @@ class Board {
 const starboard = new Board({
     name: "starboard",
     table: "starboard",
-    emoji: "🍡",
-    threshold: 7,
-    colors: [0xfcb1e3, 0xfed983, 0xa6d387],
+    emoji: "👀",
+    threshold: 4,
+    colors: [0xffffff],
     channelId: config.starboardChannelId
 });
 
-const evilboard = new Board({
-    name: "evilboard",
-    table: "evilboard",
-    emoji: "🍢",
-    threshold: 7,
-    colors: [0xccd6dd, 0xd99e82, 0x66757f],
-    channelId: config.evilboardChannelId
-});
-
 starboard.otherBoard = evilboard;
-evilboard.otherBoard = starboard;
 
 async function autoReact(message) {
     if (message.author.bot) return;
